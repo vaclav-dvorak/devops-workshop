@@ -25,7 +25,6 @@ body {
   height: 100%;
   width: 100%;
   font-family: Anodina, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -37,5 +36,14 @@ body {
   letter-spacing: 0.05em;
   color: rgb(230, 230, 230);
   background: linear-gradient(rgb(85, 85, 85) 0%, rgb(101, 101, 101) 100%);
+}
+
+@font-face {
+  font-family: "Anodina";
+  src: local("Anodina Light"), local("Anodina-Light"),
+    url("./assets/fonts/Anodina-Light.woff2") format("woff2"),
+    url("./assets/fonts/Anodina-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
 }
 </style>
