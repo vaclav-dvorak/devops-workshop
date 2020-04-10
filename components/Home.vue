@@ -1,35 +1,47 @@
 <template>
   <div class="home">
-    <img alt="Rebood logo" src="/static/rebood-logo-white.svg" class="logo" />
-    <h1>{{ msg }}</h1>
-    <p>
-      Welcome to our workshop where we show basics<br />
-      of dockerization and kubernetes.<br />
-    </p>
-    <p>
-      Contact us here:
-      <a href="https://rebood.com/" target="_blank" rel="noopener"
-        >rebood.com</a
-      >
-    </p>
+    <img alt="Rebood logo" src="/images/rebood-logo-white.svg" class="logo" />
     <img
-      src="/static/illustration-and-circle.svg"
+      src="/images/illustration-and-circle.svg"
       alt=""
       class="infographics"
     />
+    <div class="content">
+      <h1>{{ msg }}</h1>
+      <p>
+        Welcome to our workshop where we show basics<br />
+        of dockerization and kubernetes.<br />
+      </p>
+      <p>
+        Contact us here:
+        <a href="https://rebood.com/" target="_blank" rel="noopener"
+          >rebood.com</a
+        >
+      </p>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Home",
+  name: 'Home',
   props: {
     msg: {
-      default: "",
+      default: '',
       type: String
     }
+  },
+  async created() {
+    try {
+      const res = await this.$axios.$get('/list', {
+        headers: { 'Content-Type': 'application/json' }
+      })
+      console.log(res.data)
+    } catch (err) {
+      console.log(err)
+    }
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -72,10 +84,13 @@ a {
   padding: 0px;
 }
 
-.home {
-  padding: 0;
+.content {
   width: 40%;
   max-width: 500px;
+}
+
+.home {
+  padding: 0;
 }
 
 @media (min-width: 225px) {
