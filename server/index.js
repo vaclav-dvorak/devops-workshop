@@ -30,7 +30,10 @@ async function start() {
     if (ctx.req.url === '/list') {
       const body = {
         err: '0',
-        data: ['foo', 'bar']
+        data: [
+          { name: 'foo', surname: 'bar' },
+          { name: 'baz', surname: 'xyz' }
+        ]
       }
       // await db.all(axiosCalls).then((results) => {
       //   const body = {

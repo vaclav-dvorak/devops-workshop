@@ -18,6 +18,11 @@
           >rebood.com</a
         >
       </p>
+      <ul>
+        <li v-for="(user, index) in users" :key="index">
+          name: {{ user.name }}<br />surname: {{ user.surname }}
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -31,12 +36,17 @@ export default {
       type: String
     }
   },
+  data() {
+    return {
+      users: []
+    }
+  },
   async created() {
     try {
       const res = await this.$axios.$get('/list', {
         headers: { 'Content-Type': 'application/json' }
       })
-      console.log(res.data)
+      this.users = res.data
     } catch (err) {
       console.log(err)
     }
@@ -66,6 +76,10 @@ a {
   -moz-appearance: button;
   appearance: button;
   text-decoration: none;
+}
+ul {
+  text-align: left;
+  padding-top: 0.67em;
 }
 .logo {
   position: absolute;
