@@ -20,7 +20,7 @@
       </p>
       <ul>
         <li v-for="(user, index) in users" :key="index">
-          name: {{ user.name }}<br />surname: {{ user.surname }}
+          {{ user.name }} {{ user.surname }}
         </li>
       </ul>
     </div>

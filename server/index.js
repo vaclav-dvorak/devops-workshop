@@ -7,7 +7,22 @@ const app = new Koa()
 
 // Import and Set Nuxt.js options
 const config = require('../nuxt.config.js')
+const dbUsers = require('./db')
+
 config.dev = app.env !== 'production'
+
+const requiredEnvVars =
+  config.modules
+    .filter((mod) => Array.isArray(mod) && mod[0] === 'nuxt-env')
+    .map((mod) => mod[1].required)[0] || []
+
+requiredEnvVars.forEach((envVar) => {
+  if (!process.env[envVar]) {
+    throw new Error(
+      `The required environment variable '${envVar}' was not present.`
+    )
+  }
+})
 
 async function start() {
   // Instantiate nuxt.js
@@ -26,29 +41,18 @@ async function start() {
   }
 
   app.use(koaBody())
-  app.use((ctx) => {
+  app.use(async (ctx) => {
     if (ctx.req.url === '/list') {
       const body = {
         err: '0',
-        data: [
-          { name: 'foo', surname: 'bar' },
-          { name: 'baz', surname: 'xyz' }
-        ]
+        data: []
       }
-      // await db.all(axiosCalls).then((results) => {
-      //   const body = {
-      //     err: '0',
-      //     results: []
-      //   }
-      //   results.forEach((result, i) => {
-      //     parseString(result.data, xmlConfig, (e, res) => {
-      //       body.results[i] = {
-      //         ...res
-      //       }
-      //     })
-      //   })
-      ctx.body = JSON.stringify(body)
-      // })
+
+      await dbUsers.findAll().then((users) => {
+        body.data = users
+        ctx.body = JSON.stringify(body)
+      })
+
       return
     }
 

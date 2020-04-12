@@ -38,7 +38,22 @@ module.exports = {
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxtjs/axios'],
+  modules: [
+    '@nuxtjs/axios',
+    [
+      'nuxt-env',
+      {
+        keys: [
+          'DB_USER',
+          { key: 'DB_PASSWORD', secret: true },
+          { key: 'DB_URL', default: 'localhost' },
+          { key: 'ENV', default: 'dev' }
+        ],
+        // Not supported by the module itself, used for validation in server/index.js
+        required: ['DB_USER', 'DB_PASSWORD', 'DB_URL']
+      }
+    ]
+  ],
   /*
    ** Axios module configuration
    */
