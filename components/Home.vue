@@ -48,7 +48,7 @@ export default {
       })
       this.users = res.data
     } catch (err) {
-      console.log(err)
+      console.log(`Calling /list endpoint failed with error: ${err.response}`)
     }
   }
 }

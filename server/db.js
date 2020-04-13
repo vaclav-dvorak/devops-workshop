@@ -26,7 +26,7 @@ db.authenticate()
   .then(() => {
     console.log('Connection has been established successfully.')
     db.sync().then(() => {
-      console.log('User table synced.')
+      console.log('Table structures synced.')
     })
   })
   .catch((err) => {
