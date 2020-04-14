@@ -16,7 +16,12 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./:/www
+      - ./assets:/www/assets
+      - ./components:/www/components
+      - ./layouts:/www/layouts
+      - ./pages:/www/pages
+      - ./server:/www/server
+      - ./static:/www/static
     ports:
       - '80:${PORT}'
     command: "npm run dev"
@@ -26,7 +31,7 @@ services:
       - mysql
 
   mysql:
-    image: 'mariadb:10.2'
+    image: 'rebood_db:mariadb-10.2'
     env_file:
       - ./.env
     environment:
