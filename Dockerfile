@@ -4,7 +4,6 @@ ENV NODE_ENV development
 ENV DIR /www
 ENV PORT=8080
 
-RUN addgroup -S app && adduser -S app -G app
 WORKDIR ${DIR}
 
 COPY . ${DIR}
@@ -15,8 +14,13 @@ RUN apk add --no-cache --virtual .gyp \
     && npm ci \
     && npm run build \
     && npm cache clean --force \
-    && apk del .gyp
+    && apk del .gyp \
+    && addgroup -S rebood \
+    && adduser -S -g rebood app \
+    && chown app:rebood ${DIR}
 
-EXPOSE $PORT
+USER app
+
+EXPOSE ${PORT}
 
 CMD [ "npm", "run", "start" ]

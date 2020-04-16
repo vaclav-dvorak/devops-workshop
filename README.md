@@ -56,9 +56,9 @@ PORT=8080
 # baseUrl for axios
 API_URL="http://localhost:8080"
 # your database username
-DB_USER=rebood_workshop
+DB_USER=foo
 # your database password
-DB_PASSWORD=WG4NqWzrWgsLtnlI
+DB_PASSWORD=bar
 DB_URL=127.0.0.1
 ```
 

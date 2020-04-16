@@ -24,6 +24,7 @@ services:
       - ./static:/www/static
     ports:
       - '80:${PORT}'
+    user: 'root'
     command: "npm run dev"
     links:
       - mysql
