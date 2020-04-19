@@ -13,8 +13,7 @@ variables:
   containerRegistry: "docker.hub"
   dockerfile: "$(Build.SourcesDirectory)/Dockerfile"
   tag: "latest"
-  pool:
-    vmImage: ubuntu-16.04
+  vmImage: "ubuntu-18.04"
 stages:
   - stage: Test
     displayName: Test application
@@ -22,7 +21,8 @@ stages:
     jobs:
       - job: Test
         displayName: Test
-        pool: $(pool)
+        pool:
+          vmImage: $(vmImage)
         steps:
           - script: npm ci
             displayName: "Prepare node_modules"
@@ -36,7 +36,8 @@ stages:
     jobs:
       - job: Build
         displayName: Build
-        pool: $(pool)
+        pool:
+          vmImage: $(vmImage)
         steps:
           - task: Docker@2
             displayName: Build and push an image to container registry
