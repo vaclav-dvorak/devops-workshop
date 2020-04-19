@@ -1,3 +1,5 @@
+#Build pipeline references an undefined variable named ‘project’ and ‘dockerRepo’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+
 trigger:
   - master
 
@@ -9,7 +11,7 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  imageRepository: "$(project)"
+  imageRepository: "$(dockerRepo)/$(project)"
   containerRegistry: "docker.hub"
   dockerfile: "$(Build.SourcesDirectory)/Dockerfile"
   tag: "latest"
