@@ -1,0 +1,48 @@
+trigger:
+  - master
+
+pr:
+  - master
+
+resources:
+  - repo: self
+
+variables:
+  # Container registry service connection established during pipeline creation
+  imageRepository: "$(project)"
+  containerRegistry: "docker.hub"
+  dockerfile: "$(Build.SourcesDirectory)/Dockerfile"
+  tag: "latest"
+  pool:
+    vmImage: ubuntu-16.04
+stages:
+  - stage: Test
+    displayName: Test application
+    condition: notIn(variables['Build.SourceBranch'], 'refs/heads/master')
+    jobs:
+      - job: Test
+        displayName: Test
+        pool: $(pool)
+        steps:
+          - script: npm ci
+            displayName: "Prepare node_modules"
+          - script: npm run lint
+            displayName: "Lint source code"
+          - script: npm run test:unit
+            displayName: "Unit tests"
+  - stage: Build
+    displayName: Build application
+    condition: in(variables['Build.SourceBranch'], 'refs/heads/master')
+    jobs:
+      - job: Build
+        displayName: Build
+        pool: $(pool)
+        steps:
+          - task: Docker@2
+            displayName: Build and push an image to container registry
+            inputs:
+              containerRegistry: $(containerRegistry)
+              command: buildAndPush
+              repository: $(imageRepository)
+              dockerfile: $(dockerfile)
+              tags: "$(tag)"
