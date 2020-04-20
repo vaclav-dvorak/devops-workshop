@@ -50,3 +50,9 @@ stages:
               dockerfile: $(dockerfile)
               tags: "$(tag)"
               addPipelineData: false
+          - task: PublishBuildArtifacts@1
+            displayName: "Publish helm chart"
+            inputs:
+              PathtoPublish: "./server/helm/charts/devops-workshop/"
+              ArtifactName: "chart"
+            condition: succeeded()
