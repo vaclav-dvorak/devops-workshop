@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "app.fullname" . }}
+  labels:
+    app: {{ template "app.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  replicas: {{ default 2 .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ template "app.fullname" . }}
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: {{ template "app.fullname" . }}
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - {{ template "app.fullname" . }}
+              topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: {{ template "app.fullname" . }}
+        image: "{{ .Values.repo }}/{{ .Values.dockerImage | default .Values.project }}:{{ .Values.dockerTag }}"
+        imagePullPolicy: {{ default "IfNotPresent" .Values.imagePullPolicy | quote }}
+        env:
+        - name: PROJECT
+          value: "{{ .Values.project }}"
+        - name: ENV
+          value: "{{ .Values.env }}"
+{{- if .Values.ingress.hosts }}
+        - name: API_URL
+          value: "http://"{{ first (splitList "/" (index .Values.ingress.hosts 0)) | quote }}
+{{- end }}
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: database-secret
+              key: user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: database-secret
+              key: password
+        ports:
+        - containerPort: {{ default 3000 .Values.app.service.internalPort }}
+          protocol: TCP
+        volumeMounts:
+        - name: configuration
+          mountPath: /www/.env
+          subPath: .env
+        resources:
+{{ toYaml .Values.app.resources | indent 10 }}
+      initContainers:
+      - name: init-mysql
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nslookup mysql; do echo waiting for mysql; sleep 2; done;']
+      volumes:
+      - name: configuration
+        configMap:
+          defaultMode: 0444
+          name: {{ template "app.fullname" .}}-configuration

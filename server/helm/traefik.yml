@@ -1,0 +1,72 @@
+imageTag: 1.7.20
+autoscaling:
+  minReplicas: 1
+  maxReplicas: 1
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 70
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          topologyKey: "kubernetes.io/hostname"
+          labelSelector:
+            matchExpressions:
+              - key: "app"
+                operator: In
+                values:
+                  - "traefik"
+              - key: "release"
+                operator: In
+                values:
+                  - "traefik"
+externalTrafficPolicy: Local
+resources:
+  requests:
+    cpu: 100m
+    memory: 100Mi
+  limits:
+    memory: 256Mi
+rbac:
+  enabled: true
+accessLogs:
+  enabled: true
+dashboard:
+  enabled: true
+  domain: rebood-traefik.westeurope.cloudapp.azure.com
+  ingress:
+    annotations:
+      traefik.ingress.kubernetes.io/whitelist-source-range: "86.49.240.56"
+      ingress.kubernetes.io/whitelist-x-forwarded-for: true
+ssl:
+  enabled: true
+  enforced: true
+  permanentRedirect: true
+  tlsMinVersion: VersionTLS12
+  cipherSuites:
+    - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+    - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
+    - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+    - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+    - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305
+    - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+    - TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA
+    - TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
+    - TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA
+    - TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256
+    - TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+    - TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA
+acme:
+  enabled: true
+  challengeType: http-01
+  email: vaclav.dvorak@rebood.com
+  staging: false
+  logging: true
+service:
+  annotations:
+    service.beta.kubernetes.io/azure-dns-label-name: "rebood-traefik"
+    service.beta.kubernetes.io/azure-load-balancer-sku: "Standard"
+    service.beta.kubernetes.io/azure-load-balancer-resource-group: "mc_rebood_rebood_westeurope"

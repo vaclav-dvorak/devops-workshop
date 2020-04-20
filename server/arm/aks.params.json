@@ -1,0 +1,60 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourceName": {
+            "value": "rebood"
+        },
+        "location": {
+            "value": "westeurope"
+        },
+        "dnsPrefix": {
+            "value": "rebood"
+        },
+        "agentCount": {
+            "value": 1
+        },
+        "agentVMSize": {
+            "value": "Standard_F2s_v2"
+        },
+        "servicePrincipalClientId": {
+            "value": null
+        },
+        "servicePrincipalClientSecret": {
+            "value": null
+        },
+        "kubernetesVersion": {
+            "value": "1.15.10"
+        },
+        "networkPlugin": {
+            "value": "kubenet"
+        },
+        "enableRBAC": {
+            "value": true
+        },
+        "enablePrivateCluster": {
+            "value": false
+        },
+        "aadSessionKey": {
+            "value": null
+        },
+        "enableHttpApplicationRouting": {
+            "value": false
+        },
+        "vmssNodePool": {
+            "value": true
+        },
+        "workspaceName": {
+            "value": "Rebood-AKS"
+        },
+        "omsWorkspaceId": {
+            "value": "/subscriptions/11f39807-95a6-4ca0-8503-998059826c0c/resourceGroups/DefaultResourceGroup-WEU/providers/Microsoft.OperationalInsights/workspaces/Rebood-AKS"
+        },
+        "workspaceRegion": {
+            "value": "westeurope"
+        },
+        "principalId": {
+            "value": "bfd188de-5128-4126-bca0-05d44edcd23d"
+        }
+    }
+}

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "app.fullname" .}}-configuration
+data:
+  .env: |
+{{ include (print .Template.BasePath "/etc/_.env.tpl") . | indent 4 }}

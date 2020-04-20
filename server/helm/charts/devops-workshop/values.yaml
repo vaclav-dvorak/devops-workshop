@@ -1,0 +1,49 @@
+repo: "vaclavdvorak2vd"
+project: "rebood-devops-workshop" # Docker image name
+dockerTag: "latest" # Docker image tag
+env: "dev"  # Environment name
+replicas: 1
+imagePullPolicy: Always
+
+autoscaler:
+  enabled: true
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 150
+
+app:
+  service:
+    name: app
+    externalPort: 80
+    internalPort: 8080
+  resources:
+    requests:
+      memory: 64Mi
+      cpu: 10m
+    limits:
+      cpu: 250m
+      memory: 512Mi
+
+db:
+  image: "mariadb:10.2"
+  port: 3306
+  user: "rebood_workshop"
+  password: "WG4NqWzrWgsLtnlI"
+  resources:
+    requests:
+      memory: 128Mi
+      cpu: 50m
+    limits:
+      cpu: 500m
+      memory: 1Gi
+  persistence:
+    enabled: true
+    size: 1Gi
+
+ingress:
+  enabled: true
+  # Used to create an Ingress record.
+  annotations:
+    kubernetes.io/tls-acme: true
+  hosts:
+   - "devops-workshop.test.rebood.com"
+  path: /

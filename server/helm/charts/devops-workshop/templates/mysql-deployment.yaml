@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "mysql.fullname" . }}
+  labels:
+    app: {{ template "mysql.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "mysql.fullname" . }}
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: {{ template "mysql.fullname" . }}
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - {{ template "mysql.fullname" . }}
+              topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: {{ template "mysql.fullname" . }}
+        image: "{{ .Values.db.image }}"
+        imagePullPolicy: "IfNotPresent"
+        env:
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: database-secret
+              key: user
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: database-secret
+              key: user
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: database-secret
+              key: password
+        - name: MYSQL_RANDOM_ROOT_PASSWORD
+          value: "yes"
+        ports:
+        - name: mysql
+          containerPort: {{ default 3306 .Values.db.port }}
+        volumeMounts:
+        - name: configuration
+          mountPath: /www/.env
+          subPath: .env
+        - name: data
+          mountPath: /var/lib/mysql
+{{ toYaml .Values.db.resources | indent 10 }}
+      volumes:
+      - name: configuration
+        configMap:
+          defaultMode: 0444
+          name: {{ template "app.fullname" .}}-configuration
+      - name: data
+      {{- if .Values.db.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ template "mysql.fullname" . }}-data
+      {{- else }}
+        emptyDir: {}
+      {{- end }}
