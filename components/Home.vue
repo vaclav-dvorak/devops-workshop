@@ -38,18 +38,15 @@ export default {
   },
   data() {
     return {
-      users: []
+      users: [],
+      listUrl: `${this.$env.API_URL}/list`
     }
   },
   async mounted() {
-    try {
-      const res = await this.$axios.$get('/list', {
-        headers: { 'Content-Type': 'application/json' }
-      })
-      this.users = res.data
-    } catch (err) {
-      console.log(`Calling /list endpoint failed with error: ${err.response}`)
-    }
+    const users = await this.$axios.$get(this.listUrl, {
+      headers: { 'Content-Type': 'application/json' }
+    })
+    this.users = users.data
   }
 }
 </script>

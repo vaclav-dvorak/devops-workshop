@@ -48,7 +48,11 @@ module.exports = {
           'DB_NAME',
           { key: 'DB_PASSWORD', secret: true },
           { key: 'DB_URL', default: 'localhost' },
-          { key: 'ENV', default: 'dev' }
+          { key: 'ENV', default: 'dev' },
+          {
+            key: 'API_URL',
+            default: `http://${process.env.HOST}:${process.env.PORT}${process.env.PREFIX}`
+          }
         ],
         // Not supported by the module itself, used for validation in server/index.js
         required: ['DB_USER', 'DB_NAME', 'DB_PASSWORD', 'DB_URL']
@@ -60,9 +64,6 @@ module.exports = {
    */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    baseURL:
-      process.env.API_URL ||
-      `http://${process.env.HOST}:${process.env.PORT}${process.env.PREFIX}`
   },
   /*
    ** Build configuration
