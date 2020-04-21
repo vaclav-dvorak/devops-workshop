@@ -41,7 +41,7 @@ spec:
           value: "{{ .Values.env }}"
 {{- if .Values.ingress.hosts }}
         - name: API_URL
-          value: "http://"{{ first (splitList "/" (index .Values.ingress.hosts 0)) | quote }}
+          value: {{ printf "%s%s" "http://" (first (splitList "/" (index .Values.ingress.hosts 0))) | quote }}
 {{- end }}
         - name: DB_USER
           valueFrom:

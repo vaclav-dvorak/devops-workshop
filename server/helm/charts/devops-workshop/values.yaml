@@ -5,11 +5,6 @@ env: "dev"  # Environment name
 replicas: 1
 imagePullPolicy: Always
 
-autoscaler:
-  enabled: true
-  maxReplicas: 3
-  targetCPUUtilizationPercentage: 150
-
 app:
   service:
     name: app
@@ -26,8 +21,8 @@ app:
 db:
   image: "mariadb:10.2"
   port: 3306
-  user: "rebood_workshop"
-  password: "WG4NqWzrWgsLtnlI"
+  user: "foo"
+  password: "bar"
   resources:
     requests:
       memory: 128Mi
@@ -45,5 +40,5 @@ ingress:
   annotations:
     kubernetes.io/tls-acme: true
   hosts:
-   - "devops-workshop.test.rebood.com"
+   - "example.com"
   path: /
