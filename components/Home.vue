@@ -41,7 +41,7 @@ export default {
       users: []
     }
   },
-  async created() {
+  async mounted() {
     try {
       const res = await this.$axios.$get('/list', {
         headers: { 'Content-Type': 'application/json' }
