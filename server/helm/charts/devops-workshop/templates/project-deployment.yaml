@@ -43,6 +43,11 @@ spec:
         - name: API_URL
           value: {{ printf "%s%s" "http://" (first (splitList "/" (index .Values.ingress.hosts 0))) | quote }}
 {{- end }}
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: database-secret
+              key: name
         - name: DB_USER
           valueFrom:
             secretKeyRef:

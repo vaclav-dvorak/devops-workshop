@@ -59,6 +59,8 @@ API_URL="http://localhost:8080"
 DB_USER=foo
 # your database password
 DB_PASSWORD=bar
+# your database name
+DB_NAME=baz
 DB_URL=127.0.0.1
 ```
 

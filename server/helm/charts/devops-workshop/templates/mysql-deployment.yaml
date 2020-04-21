@@ -39,7 +39,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: database-secret
-              key: user
+              key: name
         - name: MYSQL_USER
           valueFrom:
             secretKeyRef:

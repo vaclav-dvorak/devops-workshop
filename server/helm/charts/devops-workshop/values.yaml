@@ -23,6 +23,7 @@ db:
   port: 3306
   user: "foo"
   password: "bar"
+  name: "baz"
   resources:
     requests:
       memory: 128Mi
