@@ -56,17 +56,10 @@ spec:
         - name: mysql
           containerPort: {{ default 3306 .Values.db.port }}
         volumeMounts:
-        - name: configuration
-          mountPath: /www/.env
-          subPath: .env
         - name: data
           mountPath: /var/lib/mysql
 {{ toYaml .Values.db.resources | indent 10 }}
       volumes:
-      - name: configuration
-        configMap:
-          defaultMode: 0444
-          name: {{ template "app.fullname" .}}-configuration
       - name: data
       {{- if .Values.db.persistence.enabled }}
         persistentVolumeClaim:
