@@ -2,7 +2,7 @@ const Sequelize = require('sequelize')
 
 const db = new Sequelize(
   `mysql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env
-    .DB_URL || 'localhost'}/rebood_workshop`,
+    .DB_URL || 'localhost'}/${process.env.DB_NAME}`,
   {
     define: {
       // The `timestamps` field specify whether or not the `createdAt` and `updatedAt` fields will be created.
