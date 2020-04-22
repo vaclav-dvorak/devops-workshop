@@ -78,3 +78,33 @@ When we need to ssh inside docker container we use following command. Here `node
 ```bash
 docker-compose run node /bin/sh
 ```
+
+# CI/CD
+All related files can be found in `.build` directory
+
+    .
+    ├── ...
+    ├── .build           # Build files
+    │   ├── arm          # Azure Resource Manager files for k8s creation
+    │   ├── helm         # Helm chart
+    └── ...
+
+## Helm chart
+Chart is simple deployment chart for two pods, services and one ingress and one persistent volume
+
+    .build/helm/charts/devop-workshop
+    ├── templates                     # template files
+    │   ├── etc                       # file templates
+    |   |   └── _.env.tpl             # template of .env file
+    |   ├── _helpers.tpl              # helper functions
+    |   ├── configmap.yaml            # Configmap manifest
+    |   ├── database-secret.yaml      # Secret for database credentials
+    |   ├── mysql-deployment.yaml     # Deployment manifest for database
+    |   ├── mysql-pvc.yaml            # Persistent Volume Claim for sdatabase
+    |   ├── mysql-service.yaml        # Service manifest for database
+    |   ├── project-deployment.yaml   # Deployment manifest for application
+    |   ├── project-ingress.yaml      # Ingres manifest for application
+    |   └── project-service.yaml      # Service manifest for application
+    ├── .helmignore                   # Files that are ignored by helm
+    ├── Chart.yaml                    # Main information file
+    └── values.yaml                   # Default values
