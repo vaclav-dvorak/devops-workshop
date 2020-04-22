@@ -51,6 +51,6 @@ stages:
           - task: PublishBuildArtifacts@1
             displayName: "Publish helm chart"
             inputs:
-              PathtoPublish: "./server/helm/charts/devops-workshop/"
+              PathtoPublish: "./.build/helm/charts/devops-workshop/"
               ArtifactName: "chart"
             condition: succeeded()
