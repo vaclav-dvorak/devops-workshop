@@ -69,10 +69,6 @@ spec:
           subPath: .env
         resources:
 {{ toYaml .Values.app.resources | indent 10 }}
-      initContainers:
-      - name: init-mysql
-        image: busybox:1.28
-        command: ['sh', '-c', 'until nslookup mysql; do echo waiting for mysql; sleep 2; done;']
       volumes:
       - name: configuration
         configMap:
