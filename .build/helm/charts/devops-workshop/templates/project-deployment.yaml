@@ -39,6 +39,8 @@ spec:
           value: "{{ .Values.project }}"
         - name: ENV
           value: "{{ .Values.env }}"
+        - name: GIT_REVISION
+          value: "{{ .Values.gitRevision }}"
 {{- if .Values.ingress.hosts }}
         - name: API_URL
           value: {{ printf "%s%s" "https://" (first (splitList "/" (index .Values.ingress.hosts 0))) | quote }}

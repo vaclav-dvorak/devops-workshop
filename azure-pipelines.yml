@@ -16,6 +16,7 @@ variables:
   dockerfile: "$(Build.SourcesDirectory)/Dockerfile"
   tag: "latest"
   vmImage: "ubuntu-18.04"
+  chartPath: "./.build/helm/charts/devops-workshop/"
 stages:
   - stage: Test
     displayName: Test application
@@ -39,6 +40,13 @@ stages:
         pool:
           vmImage: $(vmImage)
         steps:
+          - script: |
+              set -e
+              git rev-parse --short HEAD > ./version.txt
+              if [ -f $(chartPath)/values.yaml ]; then
+                sed -i -e "s/%GIT_REVISION%/`git rev-parse --short HEAD`/g" $(chartPath)/values.yaml
+              fi
+            displayName: "Put short-sha in Docker and Helm"
           - task: Docker@2
             displayName: Build and push an image to container registry
             inputs:
@@ -51,6 +59,6 @@ stages:
           - task: PublishBuildArtifacts@1
             displayName: "Publish helm chart"
             inputs:
-              PathtoPublish: "./.build/helm/charts/devops-workshop/"
+              PathtoPublish: "$(chartPath)"
               ArtifactName: "chart"
             condition: succeeded()

@@ -4,6 +4,7 @@ dockerTag: "latest" # Docker image tag
 env: "dev"  # Environment name
 replicas: 1
 imagePullPolicy: Always
+gitRevision: %GIT_REVISION%
 
 app:
   service:
